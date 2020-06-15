@@ -1,4 +1,4 @@
-# slint_test
+# slint
 
 ## Project setup
 ```
