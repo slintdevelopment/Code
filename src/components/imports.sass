@@ -1,0 +1,107 @@
+
+// Variables
+
+$background: #0F1829
+$input-color: #222C41
+$main-blue: #4558BD
+$light-blue: #99a8fd
+
+// Mixins
+
+flexcenter 
+   display: flex
+   flex-direction: column
+   align-items: center
+   justify-content: center
+
+// Styles
+
+.form-page-cont
+   position: relative
+   background: $background
+   border-radius: 0.5em
+   padding: 2.6em 3.2em
+   @extend flexcenter
+   overflow: hidden
+
+   .spinner
+      position: absolute
+      padding: 2em
+      border: 0.8em solid #fff
+      border-right-color: transparent
+      border-radius: 5em
+      animation: rotate 0.8s ease-in-out infinite
+      opacity: 0
+      pointer-events: none
+
+   .title
+      position: absolute
+      top: 0
+      background: fade-out($main-blue, 0.95%)
+      font-weight: lighter
+      font-size: 1.45em
+      padding: 0.9em
+      width: 100%
+
+.auth-error
+   position: absolute
+   font-size: 1.2em
+   padding: 0.9em 1.3em
+   background: #cf2348
+   border-radius: 3px
+   bottom: 2vh
+   transform: scale(0)
+
+.auth-form
+   display: flex
+   flex-direction: column
+
+   .group
+      margin-bottom: 1.3em
+      text-align: left
+
+      .errors
+         position: relative
+
+         p
+            margin-top: 4px
+            font-size: 0.7em
+            position: absolute
+            color: #f84a76
+
+      label
+         font-size: 0.8em
+
+      input
+         background: $input-color
+         transition: background 0.22s 
+
+         &:focus
+            background: lighten($input-color, 8%)
+
+      button
+         margin-top: 0.9em
+         background: $main-blue
+         pointer-events: all
+         opacity: 1
+         transition: all 0.25s ease
+
+         &:hover
+            background: darken($main-blue, 5%)
+
+         &.validated
+            pointer-events: none
+            opacity: 0.6
+
+      input,button
+         font-size: 1.01em
+         border: none
+         border-radius: 3px
+         padding: 0.6em 1em
+         width: 100%
+
+@keyframes rotate
+   from
+      transform: rotate(0deg)
+   to
+      transform: rotate(360deg)

@@ -1,0 +1,370 @@
+@import '@/components/imports.sass'
+
+$nav-color: #151E30
+$light-shaddow: -1px 7px 20px #0000001a
+
+$sidenav-width: 280px
+
+*
+   border: none
+
+::-webkit-scrollbar
+   width: 0.48em
+
+::-webkit-scrollbar-thumb
+   background: $input-color
+   border-radius: 3px
+
+#chat
+   width: 100vw
+   height: 100vh
+   background: $background
+   display: flex
+
+   #sidenav
+      background: $nav-color
+      width: $sidenav-width
+      height: 100vh
+
+      #profile
+         padding: 1.3em
+         display: flex
+         align-items: center
+
+         img
+            width: 2.6em
+            height: 2.6em
+            border-radius: 10rem
+            object-fit: cover
+
+         .username
+            font-size: 1.1em
+            text-align: left
+            margin: 0
+            margin-left: 0.6em
+
+            div
+               font-size: 0.8em
+               opacity: 0.6
+
+      input#friend_search
+         margin-top: 1.5em
+         padding: 0.6em 1.2em
+         border-radius: 3px
+         background: $input-color
+         transition: all 0.2s ease
+
+         &:focus
+            box-shadow: $light-shaddow
+            background: lighten($input-color, 5%)
+
+         &::placeholder
+            color: #fff
+            opacity: 0.4
+
+      .friend_placeholder
+         height: 60%
+         width: 100%
+         @extend flexcenter
+         padding: 0 20%
+
+         p
+            font-size: 1.1em
+            opacity: 0.2
+
+      .friends
+         margin-top: 2em
+         padding: 0 0.6em
+
+         ul
+            margin: 0
+            padding: 0
+
+            a
+               text-decoration: none !important
+
+            li
+               padding: 0.7em 0.9em
+               border-radius: 3px
+               display: flex
+               align-items: center
+               width: 100%
+               cursor: pointer
+               transition: all 0.2s ease
+
+               &:hover
+                  background: lighten($nav-color, 3%)
+
+                  span
+                     opacity: 0.5
+
+               img
+                  width: 2.4em
+                  height: 2.4em
+                  border-radius: 10rem
+                  object-fit: cover
+
+               .username
+                  margin: 0
+                  margin-left: 0.5em
+                  font-size: 1em
+
+                  span
+                     transition: all 0.2s ease
+                     opacity: 0
+
+   #friends_tab
+      width: calc(100vw - 280px)
+      display: flex
+      flex-direction: column
+      height: 100%
+
+      .title
+         text-align: left
+         padding: 0.9em 1em
+         width: 100%
+         font-size: 1.2em
+         background: $nav-color
+
+      #sendReq_form
+         padding: 0 2.2em
+         width: 100%
+         margin-top: 1.2em
+         text-align: left
+
+         div
+            display: flex
+
+         input,button
+            border-radius: 3px
+            padding: 0.9em 1.2em
+
+         label
+            opacity: 0.93
+
+         input
+            width: 100%
+            background: $input-color
+            transition: all 0.3s ease
+
+            &:focus
+               background: lighten($input-color, 5%)
+               box-shadow: $light-shaddow
+
+            &::placeholder
+               color: #fff
+               opacity: 0.4
+
+         button
+            text-align: center
+            margin-left: 0.8em
+            width: 20%
+            background: $main-blue
+            transition: all 0.2s ease
+            opacity: 0.6
+            pointer-events: none
+
+            &.active
+               opacity: 1
+               pointer-events: all
+
+   #friends_tab > div
+      padding: 0 2em
+      margin-top: 3em
+      display: flex
+      justify-content: space-between
+
+   #friends_tab   .fr_cont
+      width: 47%
+
+      .title_ref
+         text-align: left
+         font-size: 1em
+
+      ul
+         margin: 0
+         padding: 0
+
+      ul > li
+         display: flex
+         align-items: center
+         justify-content: space-between
+         padding: 1em 0.3em
+         border-radius: 3px
+         transition: background 0.2s ease
+
+         &:hover
+            background: lighten($background, 0.5%)
+
+         div
+            display: flex
+            align-items: center
+
+         button
+            height: 2.2em
+            width: 2.2em
+            @extend flexcenter
+            border-radius: 5rem
+            opacity: 0.8
+            transition: all 0.2s ease
+
+            &:hover
+               opacity: 1
+
+            &.del
+               background: #d15656
+               margin-left: 0.5em
+
+            &.accept
+               background: #6f9142
+
+            img
+               width: 0.7em
+
+         h1
+            margin: 0
+            font-size: 1em
+
+            span
+               opacity: 0.5
+
+         img.friend_pfp
+            margin-right: 0.7em
+            width: 2.5em
+            height: 2.5em
+            border-radius: 10rem
+            object-fit: cover
+
+      .pending_placeholder, .reqs_placeholder
+         height: 20vh
+         @extend flexcenter
+         align-items: flex-start
+         text-align: left
+         padding-right: 35%
+
+         p
+            opacity: 0.2
+
+#chatTab
+   display: flex
+   flex-direction: column
+   width: 100%
+   height: 100vh
+   position: relative
+
+#TopBar
+   width: calc(100vw - 280px)
+   background: $nav-color
+   padding: 0.8em 1em
+
+   .info
+      display: flex
+      align-items: center
+
+      h1
+         margin: 0
+         font-size: 1.2em
+
+      img
+         margin-right: 0.7em
+         width: 2.2em
+         height: 2.2em
+         border-radius: 10rem
+         object-fit: cover
+
+#messageCont
+   height: calc(100% - 9em)
+   overflow: auto
+   width: 100%
+   padding: 0 0.8em
+   margin-top: 1.2em
+   scroll-behavior: smooth
+
+   ul
+      margin: 0
+      padding: 0
+      width: 100%
+      display: flex
+      flex-direction: column
+
+      li
+         display: flex
+         flex-direction: column
+         width: 100%
+
+         .date
+            h5
+               font-size: 0.7em
+
+         p
+            font-size: 0.9em
+            margin: 0
+            margin-bottom: 0.3em
+            align-self: flex-start
+            background: $input-color
+            padding: 0.65em 1.05em
+            border-radius: 5px
+         
+            &.me
+               align-self: flex-end
+               background: $main-blue
+
+#sendForm
+   position: absolute
+   bottom: 0
+   width: 100%
+
+   div
+      width: 100%
+      display: flex
+      align-items: center
+      padding: 0.9em 1em
+
+   button, label
+      width: 2.8em
+      height: 2.8em
+      @extend flexcenter
+      border: none
+      border-radius: 10rem
+      background: $main-blue
+      margin: 0
+      margin-left: 0.6em
+
+   button
+      opacity: 0.6
+      transition: all 0.32s ease
+
+      &.isntNull
+         opacity: 1
+
+   form
+      width: 100%
+      display: flex
+      align-items: center
+
+   input[type="file"]
+      display: none
+
+   input
+      width: 100%
+      background: darken($input-color, 2%)
+      padding: 0.7em 1em
+      border-radius: 5px
+      transition: all 0.2s ease
+
+      &::placeholder
+         color: #ffffff38
+
+      &:focus
+         background: $input-color
+
+   img
+      width: 1.2em
+
+
+
+
+
+
+
+         

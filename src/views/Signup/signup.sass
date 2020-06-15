@@ -1,0 +1,85 @@
+@import '@/components/imports'
+
+#signup
+   width: 100vw
+   height: 100vh
+   position: relative
+   @extend flexcenter
+   overflow: hidden
+   background:
+      image: url('https://static.vecteezy.com/system/resources/thumbnails/000/202/168/original/M_01-01.jpg')
+      size: cover
+      position: left
+
+   .content
+      #uploadPfp-cont
+         position: absolute
+         transform: translateY(120%)
+         opacity: 0
+         transition: all 0.35s ease-out
+
+         &.active
+            transform: none
+            opacity: 1
+
+         .img-cont
+            width: 13em
+            height: 13em
+            border-radius: 10rem
+            overflow: hidden
+            position: relative
+
+            .progress
+               top: 0
+               z-index: 5
+               background: $main-blue
+               opacity: 0
+               width: 100%
+               height: 100%
+               position: absolute
+               transition: all 0.2s ease-out
+
+            img
+               width: 13em
+               height: 13em
+               object-fit: cover
+
+         .options
+            margin-top: 1.2em
+            display: flex
+            flex-direction: column
+            transition: all 0.3s ease
+
+            &.disabled
+               transform: scale(0.85)
+               opacity: 0.4
+               pointer-events: none
+
+         label, button
+            cursor: pointer
+            width: 100%
+            border: none
+            display: block
+            padding: 1em 1.25em
+            font-size: 0.95em
+            background: $main-blue
+            border-radius: 3px
+            transition: background 0.18s ease
+
+            &:hover
+               background: lighten($main-blue, 8%)  
+
+         button
+            background: $input-color
+
+            &:hover
+               background: lighten($input-color, 8%)
+         
+         input
+            display: none
+
+      #signupform-cont
+         margin-top: 4.4em
+         width: 270px
+
+      
