@@ -2,7 +2,10 @@
 ### The easiest way to communicate with teams and friends
 
 ##
+### Development files
+#### These are the source files of the current development of it. This will get updated as the development goes on.
 
+##
 #### Project setup
 ```
 npm install
