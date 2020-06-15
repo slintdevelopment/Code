@@ -1,2 +1,4 @@
 # FirstHalfCode
-50% done code
+50% of the code
+lul
+test pr
