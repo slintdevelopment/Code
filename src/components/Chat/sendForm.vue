@@ -24,14 +24,6 @@ export default class SendForm extends Vue {
    messageContent: string = ''
    notNull: boolean = false
 
-   @Emit()
-   submittedMessage(data: any) {
-      if(this.messageContent != '') {
-         this.messageContent = ''
-         return data
-      }
-   }
-
    handleSubmit(e: Event) {
       e.preventDefault()
       let date = new Date()
@@ -51,7 +43,10 @@ export default class SendForm extends Vue {
          utc: date.toUTCString()
       }
 
-      this.submittedMessage(returnObject)
+      if(this.messageContent != "" && this.messageContent != null && this.messageContent != " ") {
+         this.submittedMessage(returnObject)
+         this.messageContent = ''
+      }
    }
 
    @Watch('messageContent')
@@ -61,6 +56,11 @@ export default class SendForm extends Vue {
       } else {
          this.notNull = false
       }
+   }
+
+   @Emit()
+   submittedMessage(data: any) {
+      return data
    }
 
    @Watch('$route')

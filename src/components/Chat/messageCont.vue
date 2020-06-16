@@ -1,9 +1,11 @@
 <template>
-   <div ref="messages" id="messageCont">
+   <div id="messageCont">
       <ul>
          <li v-for="(message, index) in chats" :key="index">
-            <div class="date">
-               <h5>{{ message.localTime.hours }} : {{ message.localTime.minutes }}</h5>
+            <div class="date" :class="{'me': message.from == user.email}">
+               <h5>{{ message.localTime }}</h5>
+               <!-- <h5>
+                  {{ message.localTime.day + ' ' + message.localTime.hours + ':' +  message.localTime.minutes + ' ' + message.localTime.type }}</h5> -->
             </div>
             <p :class="{ 'me': message.from == user.email }">{{ message.content }}</p>
          </li>
@@ -26,14 +28,15 @@ let db = firebase.firestore()
 @Component
 export default class MessageCont extends Vue {
    @Prop() currentFriend!: Friend
-   @Ref('messages') message!: HTMLDivElement
+   messageDiv!: any
    user!: User
    chats: any[] = []
    time: Date = new Date()
 
    mounted() {
       this.getUser()
-      this.message.scrollTop = this.message.scrollHeight
+      // this.messageDiv = document.getElementById('#messageCont') as HTMLDivElement
+      // this.messageDiv.scrollTop = this.messageDiv.scrollHeight
    }
 
    getChats() {
@@ -41,7 +44,7 @@ export default class MessageCont extends Vue {
       .onSnapshot(querySnapshot => {
          this.chats = []
 
-         this.message.scrollTop = this.message.scrollHeight
+         // this.messageDiv.scrollTop = this.messageDiv.scrollHeight
          querySnapshot.forEach(doc => {
             this.chats = [...this.chats, { ...doc.data(), localTime: this.getLocalDate(doc.data().utcTime) }]
          })
@@ -51,26 +54,26 @@ export default class MessageCont extends Vue {
    getLocalDate(date: any) {
       let currentDate = new Date()
       let messageDate = new Date(date)
+      let type = 'AM'
+
+      if(messageDate.getHours() > 12) {
+         messageDate.setHours(messageDate.getHours() - 12)
+         type = 'PM'
+      }
 
       let returnDate = {
          year: messageDate.getFullYear(),
          month: messageDate.getMonth(),
          date: messageDate.getDate(),
-         day: messageDate.getDay(),
+         day: messageDate.toLocaleString('en-us', {  weekday: 'long' }),
          hours: messageDate.getHours(),
-         minutes: messageDate.getMinutes()
+         minutes: messageDate.getMinutes(),
+         type: type
       }
 
-      // if(currentDate.getFullYear() == messageDate.getFullYear()
-      // && currentDate.getMonth() == messageDate.getMonth()
-      // && currentDate.getMonth() == messageDate.getMonth()
-      // && currentDate.getMonth() == messageDate.getMonth()
-      // && currentDate.getMonth() == messageDate.getMonth()) {
+      let formatedDate = `${returnDate.day} ${returnDate.hours}:${returnDate.minutes} ${returnDate.type}`
 
-      // }
-
-      return returnDate
-
+      return formatedDate
    }
 
    getUser() {
