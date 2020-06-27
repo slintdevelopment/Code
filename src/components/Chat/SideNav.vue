@@ -7,7 +7,7 @@
 
       <input type="text" placeholder="Search friends" v-model="friendSearch" id="friend_search">
 
-      <div v-if="friends == []" class="friend_placeholder">
+      <div v-if="friends.length == 0" class="friend_placeholder">
          <p class="text">You currently dont have any friends</p>
       </div>
       <div v-else class="friends">

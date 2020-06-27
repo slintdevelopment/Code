@@ -18,7 +18,7 @@ export default class Signin extends Vue {
             console.log('%c Signed in user',
             'background: #5c9c5e; padding: 7px; color: #fff; border-radius: 3px')
             localStorage.setItem('uid', this.encryptor(data.email))
-            location.replace('/chat')
+            location.replace('/app')
          } else {
             formAnim.reverse()
             gsap.to('.auth-error', 0.8, { scale: 1, ease: 'elastic.out(1, 0.2)' })

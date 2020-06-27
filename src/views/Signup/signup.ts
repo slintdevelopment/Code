@@ -30,9 +30,7 @@ export default class Signup extends Vue {
     authenticateUser(this.user.email, this.user.password, (done: boolean) => {
       if(done) {
         addUserToFirebase(this.user, (done: boolean) => {
-         if(done) {
-            console.log('done')
-            
+         if(done) {  
             this.$store.commit('setUser', this.user.getUser())
 
             gsap.timeline()

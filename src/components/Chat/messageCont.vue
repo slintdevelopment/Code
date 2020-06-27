@@ -1,13 +1,14 @@
 <template>
-   <div id="messageCont">
+   <div ref="messageCont" id="messageCont">
       <ul>
          <li v-for="(message, index) in chats" :key="index">
-            <div class="date" :class="{'me': message.from == user.email}">
-               <h5>{{ message.localTime }}</h5>
-               <!-- <h5>
-                  {{ message.localTime.day + ' ' + message.localTime.hours + ':' +  message.localTime.minutes + ' ' + message.localTime.type }}</h5> -->
-            </div>
             <p :class="{ 'me': message.from == user.email }">{{ message.content }}</p>
+            
+            <div class="date" :class="{'meDate': message.from == user.email}"
+            v-if="index != (chats.length-1) && chats[index+1].from != message.from">
+               <img v-if="chats[index+1].from == currentFriend.email" :src="currentFriend.pfp" alt="">
+               <h5>{{ message.localTime }}</h5>
+            </div>
          </li>
       </ul>
    </div>
@@ -28,6 +29,7 @@ let db = firebase.firestore()
 @Component
 export default class MessageCont extends Vue {
    @Prop() currentFriend!: Friend
+   @Ref("messageCont") messageCont!: HTMLDivElement
    messageDiv!: any
    user!: User
    chats: any[] = []
@@ -35,30 +37,40 @@ export default class MessageCont extends Vue {
 
    mounted() {
       this.getUser()
-      // this.messageDiv = document.getElementById('#messageCont') as HTMLDivElement
-      // this.messageDiv.scrollTop = this.messageDiv.scrollHeight
+      this.getChats()
+      this.messageCont.scrollTop = this.messageCont.scrollHeight
    }
 
    getChats() {
       db.collection(`ChatRef/${this.currentFriend.ref}/chats`).orderBy('timestamp', 'asc')
       .onSnapshot(querySnapshot => {
          this.chats = []
-
-         // this.messageDiv.scrollTop = this.messageDiv.scrollHeight
          querySnapshot.forEach(doc => {
             this.chats = [...this.chats, { ...doc.data(), localTime: this.getLocalDate(doc.data().utcTime) }]
+            setTimeout(() => {
+               this.messageCont.scrollTop = this.messageCont.scrollHeight
+            }, 0);
          })
       })
    }
 
+   prevMessage!: any
+
    getLocalDate(date: any) {
       let currentDate = new Date()
       let messageDate = new Date(date)
+      let currentType = 'AM'
       let type = 'AM'
+      this.prevMessage = date
 
       if(messageDate.getHours() > 12) {
          messageDate.setHours(messageDate.getHours() - 12)
          type = 'PM'
+      }
+
+      if(currentDate.getHours() > 12) {
+         currentDate.setHours(currentDate.getHours() - 12)
+         currentType = 'PM'
       }
 
       let returnDate = {
@@ -70,8 +82,14 @@ export default class MessageCont extends Vue {
          minutes: messageDate.getMinutes(),
          type: type
       }
+      
+      if(returnDate.date == currentDate.getDate() && returnDate.month == currentDate.getMonth() && returnDate.year == currentDate.getFullYear()) {
+         returnDate.day = 'Today'
+      } else if(returnDate.date == (currentDate.getDate()-1) && returnDate.month == currentDate.getMonth() && returnDate.year == currentDate.getFullYear()) {
+         returnDate.day = 'Yesterday'
+      }
 
-      let formatedDate = `${returnDate.day} ${returnDate.hours}:${returnDate.minutes} ${returnDate.type}`
+      let formatedDate = `${returnDate.day} at ${returnDate.hours}:${returnDate.minutes} ${returnDate.type}`
 
       return formatedDate
    }

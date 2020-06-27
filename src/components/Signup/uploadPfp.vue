@@ -7,7 +7,7 @@
       <div class="options">
          <label for="pfp">Upload profile photo</label>
          <input @change="getImage" type="file" accept="image/*" id="pfp" alt="">
-         <button class="use_default">Use the default</button>
+         <button @click="useDefault" class="use_default">Use the default</button>
       </div>
    </div>
 </template>
@@ -20,6 +20,8 @@ import * as firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage'
 
+import { signinUser, cipher } from '@/components/functions'
+
 @Component
 export default class UploadPfp extends Vue {
    user: any
@@ -27,6 +29,7 @@ export default class UploadPfp extends Vue {
    pfpImg: any
    options!: HTMLDivElement
    progressBar: any
+   encryptor = cipher('MySlintSalt')
 
    getImage(e: any) {
       this.user = this.$store.getters.getUser
@@ -36,9 +39,16 @@ export default class UploadPfp extends Vue {
       previewFile(this.file, this.pfpImg)
       uploadFile(this.file, this.progressBar, (url: string) => {
          firebase.firestore().collection('users').doc(this.user.email).update({ pfp: url })
-         .then(() => console.log('done'))
+         .then(() =>{
+            localStorage.setItem('uid', this.encryptor(this.user.email))
+            location.replace('/app')
+         })
          .catch(e => console.log(e.message))
       })
+   }
+
+   useDefault() {
+      location.replace('/app')
    }
 
    mounted() {
