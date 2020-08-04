@@ -1,4 +1,4 @@
-<template>
+   <template>
    <div id="sendForm">
       <div class="formCont">
          <form @submit="handleSubmit">
@@ -10,7 +10,7 @@
          <label for="sendImg">
             <img src="../../assets/image.svg" alt="">
          </label>
-         <input type="file" name="" id="sendImg">
+         <input @change="onImageChange" type="file" name="" id="sendImg">
       </div>
    </div>
 </template>
@@ -18,6 +18,9 @@
 <script lang="ts">
 import { Vue, Component, Watch, Emit } from 'vue-property-decorator'
 import store from '@/store'
+
+import firebase, { functions } from 'firebase/app'
+import 'firebase/storage'
 
 @Component
 export default class SendForm extends Vue {
@@ -38,7 +41,7 @@ export default class SendForm extends Vue {
       }
 
       let returnObject = {
-         content: this.messageContent,
+         content: this.messageContent.trim(),
          from: store.getters.getUser.email,
          utc: date.toUTCString()
       }
@@ -47,6 +50,15 @@ export default class SendForm extends Vue {
          this.submittedMessage(returnObject)
          this.messageContent = ''
       }
+   }
+
+   @Emit()
+   sendImageToParent(files: Array<File>) {
+      return files
+   }
+
+   onImageChange(e: any) {
+      this.sendImageToParent(e.target.files)
    }
 
    @Watch('messageContent')

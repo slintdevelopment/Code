@@ -13,7 +13,7 @@
       <div v-else class="friends">
          <ul>
             <router-link :to="'/app/' + friend.ref" v-for="(friend, index) in s_friends" :key="index">
-            <li>
+            <li @click="makeFriendActive">
                <img :src="friend.pfp" alt="">
                <h1 class="username">{{ friend.username }}<span>{{ friend.tag }}</span></h1>
             </li>
@@ -58,6 +58,10 @@ export default class SideNav extends Vue {
       } else {
          this.s_friends = this.friends
       }
+   }
+
+   makeFriendActive(e: any) {
+      console.log(e.target.classList.add('activeFriend'))
    }
 
    getFriends() {

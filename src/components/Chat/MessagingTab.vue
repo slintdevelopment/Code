@@ -2,7 +2,7 @@
    <div id="chatTab">
       <TopBar :username="currentFriend.username" :pfp="currentFriend.pfp" />
       <MessageCont :currentFriend="currentFriend" />
-      <SendForm @submitted-message="handleMessage" />
+      <SendForm @send-image-to-parent="getImages" @submitted-message="handleMessage" />
    </div>
 </template>
 
@@ -13,6 +13,7 @@ import store from '@/store'
 import SendForm from './sendForm.vue'
 import TopBar from './topBar.vue'
 import MessageCont from './messageCont.vue'
+import UploadStatus from './uploadStatus.vue'
 
 import { User, Friend } from '../classes'
 import { sendMessage, getUserWithEmail } from '../functions'
@@ -37,6 +38,7 @@ export default class MessagingTab extends Vue {
       email: ''
    }
    friends: Friend[] = []
+   files: Array<File> = []
 
    getFriends() {
       this.friends = store.getters.getFriends
@@ -60,6 +62,10 @@ export default class MessagingTab extends Vue {
    
    handleMessage(message: any) {
       sendMessage(message, this.currentFriend)
+   }
+
+   getImages(files: Array<File>) {
+      this.files = files
    }
 
    mounted() {
