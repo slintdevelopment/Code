@@ -2,7 +2,7 @@
    <div ref="messageCont" id="messageCont">
       <ul>
          <li v-for="(message, index) in chats" :key="index" :id="message.id">
-         
+
             <p :class="{ 'me': message.from == user.email }">{{ message.content }}</p>
             
             <div class="date" :class="{'meDate': message.from == user.email}"
@@ -96,11 +96,12 @@ export default class MessageCont extends Vue {
          returnDate.day = 'Yesterday'
       }
 
-      if(returnDate.minutes.toString().length == 1) {
-         returnDate.minutes = ('0' + returnDate.minutes).slice(-2)
-      }
+      let previewMinutes = returnDate.minutes.toString()
 
-      let formatedDate = `${returnDate.day} at ${returnDate.hours}:${returnDate.minutes} ${returnDate.type}`
+      if(returnDate.minutes.toString().length == 1)
+         previewMinutes = '0' + returnDate.minutes.toString()
+
+      let formatedDate = `${returnDate.day} at ${returnDate.hours}:${returnDate.minutes} ${previewMinutes}`
 
       if(returnDate.month != currentDate.getMonth()) {
          let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August' , 'September', 'October', 'November', 'December']
